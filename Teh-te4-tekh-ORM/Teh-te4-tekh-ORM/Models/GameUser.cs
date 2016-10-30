@@ -6,6 +6,7 @@
     public class GameUser
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int GameUserID { get; set; }
 
         [StringLength(50)]

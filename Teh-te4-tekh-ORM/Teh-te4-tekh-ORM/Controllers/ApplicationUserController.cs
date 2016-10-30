@@ -1,12 +1,12 @@
-﻿using System;
-using System.Web.Http.Results;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Teh_te4_tekh_ORM.Controllers
 {
-    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
-    using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
     using Models;
@@ -21,7 +21,7 @@ namespace Teh_te4_tekh_ORM.Controllers
             return this.db.ApplicationUsers;
         }
 
-        /*// GET: api/ApplicationUser/5
+        // GET: api/ApplicationUser/5
         [ResponseType(typeof(ApplicationUser))]
         public IHttpActionResult GetApplicationUser(int id)
         {
@@ -67,7 +67,7 @@ namespace Teh_te4_tekh_ORM.Controllers
             }
 
             return this.StatusCode(HttpStatusCode.NoContent);
-        }*/
+        }
 
         // POST: api/ApplicationUser
         [ResponseType(typeof(ApplicationUser))]
@@ -76,6 +76,15 @@ namespace Teh_te4_tekh_ORM.Controllers
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
+            }
+
+            ApplicationUser user =
+                this.db.ApplicationUsers.SingleOrDefault(
+                    au => au.Email.Equals(applicationUser.Email) && au.Password.Equals(applicationUser.Password));
+
+            if (user != null)
+            {
+                return this.CreatedAtRoute("DefaultApi", new { id = user.ApplicationUserID }, user);
             }
             
             this.db.ApplicationUsers.Add(applicationUser);
@@ -86,7 +95,7 @@ namespace Teh_te4_tekh_ORM.Controllers
             }
             catch (DbUpdateException)
             {
-                this.Conflict();
+                return this.Conflict();
             }
 
             return this.CreatedAtRoute("DefaultApi", new { id = applicationUser.ApplicationUserID }, applicationUser);

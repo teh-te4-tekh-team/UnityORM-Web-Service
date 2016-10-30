@@ -70,15 +70,20 @@ namespace Teh_te4_tekh_ORM.Controllers
         [ResponseType(typeof(GameUser))]
         public IHttpActionResult PostGameUser(ApplicationUser applicationUser)
         {
-            applicationUser = this.db.ApplicationUsers.Find(applicationUser.ApplicationUserID);
+            if (this.GameUserExists(applicationUser.ApplicationUserID))
+            {
+                GameUser user = this.db.GameUsers.Find(applicationUser.ApplicationUserID);
+                return this.CreatedAtRoute("DefaultApi", new { id = user.GameUserID }, user);
+            }
+
             GameUser gameUser = new GameUser
             {
-                Username = applicationUser.Email.Split('@')[0],
+                GameUserID = applicationUser.ApplicationUserID,
+                Username = applicationUser.Email
             };
-            applicationUser.GameUser = gameUser;
 
             this.db.GameUsers.Add(gameUser);
-
+            
             try
             {
                 this.db.SaveChanges();
