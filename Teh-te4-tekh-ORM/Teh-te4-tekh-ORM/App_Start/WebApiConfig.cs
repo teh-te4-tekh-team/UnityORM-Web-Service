@@ -1,4 +1,6 @@
-﻿namespace Teh_te4_tekh_ORM
+﻿using Teh_te4_tekh_ORM.MessageHandlers;
+
+namespace Teh_te4_tekh_ORM
 {
     using System.Net.Http.Headers;
     using System.Web.Http;
@@ -19,6 +21,8 @@
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.MessageHandlers.Add(new MethodOverrideHandler());
 /*
             config.Routes.MapHttpRoute(
                 name: "GetGameUser",

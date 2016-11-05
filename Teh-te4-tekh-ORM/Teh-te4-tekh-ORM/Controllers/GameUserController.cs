@@ -35,41 +35,39 @@ namespace Teh_te4_tekh_ORM.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutGameUser(int id, GameUser gameUser)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             if (id != gameUser.GameUserID)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            db.Entry(gameUser).State = EntityState.Modified;
+            this.db.Entry(gameUser).State = EntityState.Modified;
 
             try
             {
-                db.SaveChanges();
+                this.db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GameUserExists(id))
+                if (!this.GameUserExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return this.StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/GameUser
         [ResponseType(typeof(GameUser))]
         public IHttpActionResult PostGameUser(ApplicationUser applicationUser)
         {
+
             if (this.GameUserExists(applicationUser.ApplicationUserID))
             {
                 GameUser user = this.db.GameUsers.Find(applicationUser.ApplicationUserID);
