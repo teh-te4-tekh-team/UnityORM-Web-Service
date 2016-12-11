@@ -1,5 +1,8 @@
 ﻿namespace Teh_te4_tekh_ORM.Models
 {
+    /// <summary>
+    /// Simple point data structure.
+    /// </summary>
     public class SpawnPoint
     {
         public int Id { get; set; }

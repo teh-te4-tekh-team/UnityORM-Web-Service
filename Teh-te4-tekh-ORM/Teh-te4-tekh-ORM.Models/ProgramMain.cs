@@ -1,8 +1,8 @@
 ﻿namespace Teh_te4_tekh_ORM.Models
 {
-    class EntryPoint
+    public class ProgramMain
     {
-        static void Main(string[] args)
+        public static void Main()
         {
         }
     }

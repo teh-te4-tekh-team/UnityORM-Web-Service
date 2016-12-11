@@ -1,6 +1,6 @@
 ﻿namespace Teh_te4_tekh_ORM.Models
 {
-    public enum EffectType
+    public enum CollectableType
     {
         Health,
         Sight,
@@ -23,6 +23,6 @@
         /// <summary>
         /// Type of effect (bonus) to be applied.
         /// </summary>
-        public EffectType Type { get; set; }
+        public CollectableType Type { get; set; }
     }
 }
