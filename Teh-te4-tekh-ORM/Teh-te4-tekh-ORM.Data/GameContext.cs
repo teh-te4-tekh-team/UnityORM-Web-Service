@@ -12,7 +12,9 @@ namespace Teh_te4_tekh_ORM.Controllers
         }
 
         public DbSet<User> ApplicationUsers { get; set; }
+
         public DbSet<Player> GameUsers { get; set; }
+
         public DbSet<Map> Maps { get; set; }
     }
 }

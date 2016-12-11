@@ -6,6 +6,6 @@
     {
         public int Id { get; set; }
 
-        public virtual ICollection<SpawnPoint> SpawnPoints { get; set; }
+        public virtual ICollection<CheckPoint> SpawnPoints { get; set; }
     }
 }

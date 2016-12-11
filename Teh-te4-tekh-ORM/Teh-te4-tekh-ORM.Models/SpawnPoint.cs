@@ -10,6 +10,6 @@
 
         public float Z { get; set; }
 
-        public virtual Map Map { get; set; }
+        public virtual CheckPoint CheckPoint { get; set; }
     }
 }
