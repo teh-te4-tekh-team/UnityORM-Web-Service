@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-
-namespace Teh_te4_tekh_ORM.Controllers
+﻿namespace Teh_te4_tekh_ORM.Controllers
 {
+    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
+    using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
+
     using Models;
 
     public class ApplicationUserController : ApiController
