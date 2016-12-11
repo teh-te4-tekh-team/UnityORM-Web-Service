@@ -168,12 +168,9 @@
     <Compile Include="Controllers\ApplicationUserController.cs" />
     <Compile Include="Controllers\GameUserController.cs" />
     <Compile Include="MessageHandlers\MethodOverrideHandler.cs" />
-    <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\GameContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\GameUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -226,7 +223,16 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Teh-te4-tekh-ORM.Data\Teh-te4-tekh-ORM.Data.csproj">
+      <Project>{40626ea4-875d-4b1a-8805-3e7d529f20b6}</Project>
+      <Name>Teh-te4-tekh-ORM.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Teh-te4-tekh-ORM.Models\Teh-te4-tekh-ORM.Models.csproj">
+      <Project>{d3b2716f-4984-4f1d-86d0-d8a39adaeca5}</Project>
+      <Name>Teh-te4-tekh-ORM.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
