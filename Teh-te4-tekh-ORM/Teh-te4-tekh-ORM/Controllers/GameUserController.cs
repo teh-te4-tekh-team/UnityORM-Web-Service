@@ -13,16 +13,16 @@ namespace Teh_te4_tekh_ORM.Controllers
         private readonly GameContext db = new GameContext();
 
         // GET: api/GameUser
-        public IQueryable<GameUser> GetGameUsers()
+        public IQueryable<Player> GetGameUsers()
         {
             return db.GameUsers;
         }
 
         // GET: api/GameUser/5
-        [ResponseType(typeof(GameUser))]
+        [ResponseType(typeof(Player))]
         public IHttpActionResult GetGameUser(int id)
         {
-            GameUser gameUser = db.GameUsers.Find(id);
+            Player gameUser = db.GameUsers.Find(id);
             if (gameUser == null)
             {
                 return this.NotFound();
@@ -33,7 +33,7 @@ namespace Teh_te4_tekh_ORM.Controllers
 
         // PUT: api/GameUser/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutGameUser(int id, GameUser gameUser)
+        public IHttpActionResult PutGameUser(int id, Player gameUser)
         {
             if (!this.ModelState.IsValid)
             {
@@ -64,17 +64,17 @@ namespace Teh_te4_tekh_ORM.Controllers
         }
 
         // POST: api/GameUser
-        [ResponseType(typeof(GameUser))]
+        [ResponseType(typeof(Player))]
         public IHttpActionResult PostGameUser(ApplicationUser applicationUser)
         {
 
             if (this.GameUserExists(applicationUser.ApplicationUserID))
             {
-                GameUser user = this.db.GameUsers.Find(applicationUser.ApplicationUserID);
+                Player user = this.db.GameUsers.Find(applicationUser.ApplicationUserID);
                 return this.CreatedAtRoute("DefaultApi", new { id = user.GameUserID }, user);
             }
 
-            GameUser gameUser = new GameUser
+            Player gameUser = new Player
             {
                 GameUserID = applicationUser.ApplicationUserID,
                 Username = applicationUser.Email
