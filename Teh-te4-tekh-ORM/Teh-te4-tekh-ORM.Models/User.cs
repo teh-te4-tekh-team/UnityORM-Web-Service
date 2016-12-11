@@ -8,8 +8,7 @@
     /// </summary>
     public class User
     {
-        [Key]
-        public int User { get; set; }
+        public int Id { get; set; }
 
         [StringLength(100)]
         [Index(IsUnique = true)]

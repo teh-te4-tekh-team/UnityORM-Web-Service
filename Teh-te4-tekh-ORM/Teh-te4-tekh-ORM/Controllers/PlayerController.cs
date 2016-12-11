@@ -8,7 +8,7 @@ using Teh_te4_tekh_ORM.Models;
 
 namespace Teh_te4_tekh_ORM.Controllers
 {
-    public class GameUserController : ApiController
+    public class PlayerController : ApiController
     {
         private readonly GameContext db = new GameContext();
 
@@ -40,7 +40,7 @@ namespace Teh_te4_tekh_ORM.Controllers
                 return this.BadRequest(this.ModelState);
             }
 
-            if (id != gameUser.GameUserID)
+            if (id != gameUser.Id)
             {
                 return this.BadRequest();
             }
@@ -65,18 +65,18 @@ namespace Teh_te4_tekh_ORM.Controllers
 
         // POST: api/GameUser
         [ResponseType(typeof(Player))]
-        public IHttpActionResult PostGameUser(ApplicationUser applicationUser)
+        public IHttpActionResult PostGameUser(User applicationUser)
         {
 
-            if (this.GameUserExists(applicationUser.ApplicationUserID))
+            if (this.GameUserExists(applicationUser.Id))
             {
-                Player user = this.db.GameUsers.Find(applicationUser.ApplicationUserID);
-                return this.CreatedAtRoute("DefaultApi", new { id = user.GameUserID }, user);
+                Player user = this.db.GameUsers.Find(applicationUser.Id);
+                return this.CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
             }
 
             Player gameUser = new Player
             {
-                GameUserID = applicationUser.ApplicationUserID,
+                Id = applicationUser.Id,
                 Username = applicationUser.Email
             };
 
@@ -88,7 +88,7 @@ namespace Teh_te4_tekh_ORM.Controllers
             }
             catch (DbUpdateException)
             {
-                if (this.GameUserExists(gameUser.GameUserID))
+                if (this.GameUserExists(gameUser.Id))
                 {
                     return this.Conflict();
                 }
@@ -96,7 +96,7 @@ namespace Teh_te4_tekh_ORM.Controllers
                 return this.BadRequest();
             }
 
-            return this.CreatedAtRoute("DefaultApi", new { id = gameUser.GameUserID }, gameUser);
+            return this.CreatedAtRoute("DefaultApi", new { id = gameUser.Id }, gameUser);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,7 +110,7 @@ namespace Teh_te4_tekh_ORM.Controllers
 
         private bool GameUserExists(int id)
         {
-            return db.GameUsers.Count(e => e.GameUserID == id) > 0;
+            return db.GameUsers.Count(e => e.Id == id) > 0;
         }
     }
 }

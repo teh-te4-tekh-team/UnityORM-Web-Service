@@ -8,7 +8,6 @@
     /// </summary>
     public class Player
     {
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 

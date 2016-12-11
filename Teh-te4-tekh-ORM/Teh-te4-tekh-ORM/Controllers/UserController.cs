@@ -9,21 +9,21 @@
 
     using Models;
 
-    public class ApplicationUserController : ApiController
+    public class UserController : ApiController
     {
         private readonly GameContext db = new GameContext();
 
         // GET: api/ApplicationUser
-        public IQueryable<ApplicationUser> GetApplicationUsers()
+        public IQueryable<User> GetApplicationUsers()
         {
             return this.db.ApplicationUsers;
         }
 
         // GET: api/ApplicationUser/5
-        [ResponseType(typeof(ApplicationUser))]
+        [ResponseType(typeof(User))]
         public IHttpActionResult GetApplicationUser(int id)
         {
-            ApplicationUser applicationUser = this.db.ApplicationUsers.Find(id);
+            User applicationUser = this.db.ApplicationUsers.Find(id);
             if (applicationUser == null)
             {
                 return this.NotFound();
@@ -34,14 +34,14 @@
 
         // PUT: api/ApplicationUser/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutApplicationUser(int id, ApplicationUser applicationUser)
+        public IHttpActionResult PutApplicationUser(int id, User applicationUser)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
             }
 
-            if (id != applicationUser.ApplicationUserID)
+            if (id != applicationUser.Id)
             {
                 return this.BadRequest();
             }
@@ -68,21 +68,21 @@
         }
 
         // POST: api/ApplicationUser
-        [ResponseType(typeof(ApplicationUser))]
-        public IHttpActionResult PostApplicationUser(ApplicationUser applicationUser)
+        [ResponseType(typeof(User))]
+        public IHttpActionResult PostApplicationUser(User applicationUser)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
             }
 
-            ApplicationUser user =
+            User user =
                 this.db.ApplicationUsers.SingleOrDefault(
                     au => au.Email.Equals(applicationUser.Email) && au.Password.Equals(applicationUser.Password));
 
             if (user != null)
             {
-                return this.CreatedAtRoute("DefaultApi", new { id = user.ApplicationUserID }, user);
+                return this.CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
             }
             
             this.db.ApplicationUsers.Add(applicationUser);
@@ -110,7 +110,7 @@
 
         private bool ApplicationUserExists(int id)
         {
-            return this.db.ApplicationUsers.Count(e => e.ApplicationUserID == id) > 0;
+            return this.db.ApplicationUsers.Count(e => e.Id == id) > 0;
         }
     }
 }
