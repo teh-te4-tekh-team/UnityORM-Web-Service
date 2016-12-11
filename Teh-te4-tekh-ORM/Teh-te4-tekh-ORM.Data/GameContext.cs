@@ -2,9 +2,7 @@ using Teh_te4_tekh_ORM.Models;
 
 namespace Teh_te4_tekh_ORM.Controllers
 {
-    using System;
     using System.Data.Entity;
-    using System.Linq;
 
     public class GameContext : DbContext
     {
@@ -19,8 +17,9 @@ namespace Teh_te4_tekh_ORM.Controllers
         {
         }
 
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<User> ApplicationUsers { get; set; }
         public DbSet<Player> GameUsers { get; set; }
+        public DbSet<Map> Maps { get; set; }
 
         // Add a DbSet for each entity type that you want to include in your model. For more information 
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.

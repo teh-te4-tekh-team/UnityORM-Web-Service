@@ -96,7 +96,7 @@
                 return this.Conflict();
             }
 
-            return this.CreatedAtRoute("DefaultApi", new { id = applicationUser.ApplicationUserID }, applicationUser);
+            return this.CreatedAtRoute("DefaultApi", new { id = applicationUser.Id }, applicationUser);
         }
 
         protected override void Dispose(bool disposing)

@@ -52,8 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationUser.cs" />
-    <Compile Include="GameUser.cs" />
+    <Compile Include="Map.cs" />
+    <Compile Include="Pickable.cs" />
+    <Compile Include="SpawnPoint.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

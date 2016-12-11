@@ -1,13 +1,14 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Teh_te4_tekh_ORM.Models;
-
-namespace Teh_te4_tekh_ORM.Controllers
+﻿namespace Teh_te4_tekh_ORM.Controllers
 {
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Http;
+    using System.Web.Http.Description;
+
+    using Models;
+
     public class PlayerController : ApiController
     {
         private readonly GameContext db = new GameContext();
