@@ -1,5 +1,7 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
+    using Orm.Data;
+    using Orm.Models.Models;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
@@ -7,56 +9,54 @@
     using System.Web.Http;
     using System.Web.Http.Description;
 
-    using Models;
-
     public class SpawnPointsController : ApiController
     {
-        private GameContext db = new GameContext();
+        private readonly GameContext db = new GameContext();
 
         // GET: api/SpawnPoints
         public IQueryable<SpawnPoint> GetSpawnPoints()
         {
-            return db.SpawnPoints;
+            return this.db.SpawnPoints;
         }
 
         // GET: api/SpawnPoints/5
         [ResponseType(typeof(SpawnPoint))]
         public IHttpActionResult GetSpawnPoint(int id)
         {
-            SpawnPoint spawnPoint = db.SpawnPoints.Find(id);
+            SpawnPoint spawnPoint = this.db.SpawnPoints.Find(id);
             if (spawnPoint == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return Ok(spawnPoint);
+            return this.Ok(spawnPoint);
         }
 
         // PUT: api/SpawnPoints/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutSpawnPoint(int id, SpawnPoint spawnPoint)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             if (id != spawnPoint.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            db.Entry(spawnPoint).State = EntityState.Modified;
+            this.db.Entry(spawnPoint).State = EntityState.Modified;
 
             try
             {
-                db.SaveChanges();
+                this.db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SpawnPointExists(id))
+                if (!this.SpawnPointExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
                 else
                 {
@@ -64,52 +64,52 @@
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return this.StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/SpawnPoints
         [ResponseType(typeof(SpawnPoint))]
         public IHttpActionResult PostSpawnPoint(SpawnPoint spawnPoint)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            db.SpawnPoints.Add(spawnPoint);
-            db.SaveChanges();
+            this.db.SpawnPoints.Add(spawnPoint);
+            this.db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = spawnPoint.Id }, spawnPoint);
+            return this.CreatedAtRoute("DefaultApi", new { id = spawnPoint.Id }, spawnPoint);
         }
 
         // DELETE: api/SpawnPoints/5
         [ResponseType(typeof(SpawnPoint))]
         public IHttpActionResult DeleteSpawnPoint(int id)
         {
-            SpawnPoint spawnPoint = db.SpawnPoints.Find(id);
+            SpawnPoint spawnPoint = this.db.SpawnPoints.Find(id);
             if (spawnPoint == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            db.SpawnPoints.Remove(spawnPoint);
-            db.SaveChanges();
+            this.db.SpawnPoints.Remove(spawnPoint);
+            this.db.SaveChanges();
 
-            return Ok(spawnPoint);
+            return this.Ok(spawnPoint);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool SpawnPointExists(int id)
         {
-            return db.SpawnPoints.Count(e => e.Id == id) > 0;
+            return this.db.SpawnPoints.Count(e => e.Id == id) > 0;
         }
     }
 }

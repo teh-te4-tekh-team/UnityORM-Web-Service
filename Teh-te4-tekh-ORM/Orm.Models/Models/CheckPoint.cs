@@ -1,4 +1,4 @@
-﻿namespace Teh_te4_tekh_ORM.Models
+﻿namespace Orm.Models.Models
 {
     using System.Collections.Generic;
 
@@ -8,6 +8,11 @@
     /// </summary>
     public class CheckPoint
     {
+        public CheckPoint()
+        {
+            this.SpawnPoints = new List<SpawnPoint>();
+        }
+
         public int Id { get; set; }
 
         public float X { get; set; }

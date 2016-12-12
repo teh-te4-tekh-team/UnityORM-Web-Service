@@ -1,61 +1,62 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
+    using Orm.Data;
+    using Orm.Models.Models;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
-    using Models;
 
     public class CheckPointsController : ApiController
     {
-        private GameContext db = new GameContext();
+        private readonly GameContext db = new GameContext();
 
         // GET: api/CheckPoints
         public IQueryable<CheckPoint> GetCheckPoints()
         {
-            return db.CheckPoints;
+            return this.db.CheckPoints;
         }
 
         // GET: api/CheckPoints/5
         [ResponseType(typeof(CheckPoint))]
         public IHttpActionResult GetCheckPoint(int id)
         {
-            CheckPoint checkPoint = db.CheckPoints.Find(id);
+            CheckPoint checkPoint = this.db.CheckPoints.Find(id);
             if (checkPoint == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return Ok(checkPoint);
+            return this.Ok(checkPoint);
         }
 
         // PUT: api/CheckPoints/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutCheckPoint(int id, CheckPoint checkPoint)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             if (id != checkPoint.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            db.Entry(checkPoint).State = EntityState.Modified;
+            this.db.Entry(checkPoint).State = EntityState.Modified;
 
             try
             {
-                db.SaveChanges();
+                this.db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CheckPointExists(id))
+                if (!this.CheckPointExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
                 else
                 {
@@ -63,52 +64,52 @@
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return this.StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/CheckPoints
         [ResponseType(typeof(CheckPoint))]
         public IHttpActionResult PostCheckPoint(CheckPoint checkPoint)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            db.CheckPoints.Add(checkPoint);
-            db.SaveChanges();
+            this.db.CheckPoints.Add(checkPoint);
+            this.db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = checkPoint.Id }, checkPoint);
+            return this.CreatedAtRoute("DefaultApi", new { id = checkPoint.Id }, checkPoint);
         }
 
         // DELETE: api/CheckPoints/5
         [ResponseType(typeof(CheckPoint))]
         public IHttpActionResult DeleteCheckPoint(int id)
         {
-            CheckPoint checkPoint = db.CheckPoints.Find(id);
+            CheckPoint checkPoint = this.db.CheckPoints.Find(id);
             if (checkPoint == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            db.CheckPoints.Remove(checkPoint);
-            db.SaveChanges();
+            this.db.CheckPoints.Remove(checkPoint);
+            this.db.SaveChanges();
 
-            return Ok(checkPoint);
+            return this.Ok(checkPoint);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool CheckPointExists(int id)
         {
-            return db.CheckPoints.Count(e => e.Id == id) > 0;
+            return this.db.CheckPoints.Count(e => e.Id == id) > 0;
         }
     }
 }

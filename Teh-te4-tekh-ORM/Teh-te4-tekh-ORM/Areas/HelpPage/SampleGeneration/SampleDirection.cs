@@ -1,4 +1,4 @@
-namespace Teh_te4_tekh_ORM.Areas.HelpPage
+namespace Teh_te4_tekh_ORM.Areas.HelpPage.SampleGeneration
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

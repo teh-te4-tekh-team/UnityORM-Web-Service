@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D3B2716F-4984-4F1D-86D0-D8A39ADAECA5}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{331659EE-980A-4F2E-8D0D-103FD626A5C5}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Teh_te4_tekh_ORM.Models</RootNamespace>
-    <AssemblyName>Teh-te4-tekh-ORM.Models</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>Orm.Models</RootNamespace>
+    <AssemblyName>Orm.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -52,15 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProgramMain.cs" />
-    <Compile Include="Map.cs" />
-    <Compile Include="Collectable.cs" />
-    <Compile Include="CheckPoint.cs" />
-    <Compile Include="SpawnPoint.cs" />
-    <Compile Include="User.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Collectibles.cs" />
+    <Compile Include="Models\CheckPoint.cs" />
+    <Compile Include="Models\Collectible.cs" />
+    <Compile Include="Models\Map.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\SpawnPoint.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

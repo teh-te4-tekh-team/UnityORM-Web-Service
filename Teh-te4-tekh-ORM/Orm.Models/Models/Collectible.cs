@@ -1,13 +1,5 @@
-﻿namespace Teh_te4_tekh_ORM.Models
+﻿namespace Orm.Models.Models
 {
-    public enum CollectableType
-    {
-        Health,
-        Sight,
-        Strength,
-        Speed
-    }
-
     /// <summary>
     /// Class for game objects that can be "picked" up and can provide some bonus.
     /// </summary>
@@ -23,6 +15,6 @@
         /// <summary>
         /// Type of effect (bonus) to be applied.
         /// </summary>
-        public CollectableType Type { get; set; }
+        public virtual CollectableType Type { get; set; }
     }
 }

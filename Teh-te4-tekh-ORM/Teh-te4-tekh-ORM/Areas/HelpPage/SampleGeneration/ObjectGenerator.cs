@@ -1,13 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-
-namespace Teh_te4_tekh_ORM.Areas.HelpPage
+namespace Teh_te4_tekh_ORM.Areas.HelpPage.SampleGeneration
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
     /// This class will create an object of a given type and populate it with sample data.
     /// </summary>
@@ -32,7 +32,7 @@ namespace Teh_te4_tekh_ORM.Areas.HelpPage
         /// <returns>An object of the given type.</returns>
         public object GenerateObject(Type type)
         {
-            return GenerateObject(type, new Dictionary<Type, object>());
+            return this.GenerateObject(type, new Dictionary<Type, object>());
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Here we just want to return null if anything goes wrong.")]
@@ -42,7 +42,7 @@ namespace Teh_te4_tekh_ORM.Areas.HelpPage
             {
                 if (SimpleTypeObjectGenerator.CanGenerateObject(type))
                 {
-                    return SimpleObjectGenerator.GenerateObject(type);
+                    return this.SimpleObjectGenerator.GenerateObject(type);
                 }
 
                 if (type.IsArray)
@@ -418,13 +418,13 @@ namespace Teh_te4_tekh_ORM.Areas.HelpPage
                     { typeof(Object), index => new object() },
                     { typeof(SByte), index => (SByte)64 },
                     { typeof(Single), index => (Single)(index + 0.1) },
-                    { 
+                    {
                         typeof(String), index =>
                         {
                             return String.Format(CultureInfo.CurrentCulture, "sample string {0}", index);
                         }
                     },
-                    { 
+                    {
                         typeof(TimeSpan), index =>
                         {
                             return TimeSpan.FromTicks(1234567);
@@ -433,7 +433,7 @@ namespace Teh_te4_tekh_ORM.Areas.HelpPage
                     { typeof(UInt16), index => (UInt16)(index % UInt16.MaxValue) },
                     { typeof(UInt32), index => (UInt32)(index % UInt32.MaxValue) },
                     { typeof(UInt64), index => (UInt64)index },
-                    { 
+                    {
                         typeof(Uri), index =>
                         {
                             return new Uri(String.Format(CultureInfo.CurrentCulture, "http://webapihelppage{0}.com", index));
@@ -449,7 +449,7 @@ namespace Teh_te4_tekh_ORM.Areas.HelpPage
 
             public object GenerateObject(Type type)
             {
-                return DefaultGenerators[type](++_index);
+                return DefaultGenerators[type](++this._index);
             }
         }
     }

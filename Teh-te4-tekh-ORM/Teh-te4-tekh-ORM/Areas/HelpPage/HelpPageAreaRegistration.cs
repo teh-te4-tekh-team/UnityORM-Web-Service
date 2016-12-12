@@ -1,17 +1,12 @@
-using System.Web.Http;
-using System.Web.Mvc;
-
 namespace Teh_te4_tekh_ORM.Areas.HelpPage
 {
+    using App_Start;
+    using System.Web.Http;
+    using System.Web.Mvc;
+
     public class HelpPageAreaRegistration : AreaRegistration
     {
-        public override string AreaName
-        {
-            get
-            {
-                return "HelpPage";
-            }
-        }
+        public override string AreaName => "HelpPage";
 
         public override void RegisterArea(AreaRegistrationContext context)
         {

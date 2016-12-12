@@ -1,7 +1,7 @@
-using System;
-
 namespace Teh_te4_tekh_ORM.Areas.HelpPage.ModelDescriptions
 {
+    using System;
+
     /// <summary>
     /// Describes a type model.
     /// </summary>

@@ -1,13 +1,13 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
+    using Orm.Data;
+    using Orm.Models.Models;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
-
-    using Models;
 
     public class UserController : ApiController
     {
@@ -84,7 +84,7 @@
             {
                 return this.CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
             }
-            
+
             this.db.ApplicationUsers.Add(applicationUser);
 
             try

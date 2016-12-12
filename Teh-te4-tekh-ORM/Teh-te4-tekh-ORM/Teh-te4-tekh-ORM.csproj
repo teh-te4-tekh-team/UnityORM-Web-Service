@@ -228,22 +228,21 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Teh-te4-tekh-ORM.Data\Teh-te4-tekh-ORM.Data.csproj">
-      <Project>{40626ea4-875d-4b1a-8805-3e7d529f20b6}</Project>
-      <Name>Teh-te4-tekh-ORM.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Teh-te4-tekh-ORM.Models\Teh-te4-tekh-ORM.Models.csproj">
-      <Project>{d3b2716f-4984-4f1d-86d0-d8a39adaeca5}</Project>
-      <Name>Teh-te4-tekh-ORM.Models</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Orm.Data\Orm.Data.csproj">
+      <Project>{3dd1703f-d311-49e5-a323-dd90e14c09d6}</Project>
+      <Name>Orm.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orm.Models\Orm.Models.csproj">
+      <Project>{331659ee-980a-4f2e-8d0d-103fd626a5c5}</Project>
+      <Name>Orm.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

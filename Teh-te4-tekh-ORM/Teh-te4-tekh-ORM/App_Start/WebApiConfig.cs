@@ -1,7 +1,6 @@
-﻿using Teh_te4_tekh_ORM.MessageHandlers;
-
-namespace Teh_te4_tekh_ORM
+﻿namespace Teh_te4_tekh_ORM
 {
+    using MessageHandlers;
     using System.Net.Http.Headers;
     using System.Web.Http;
 
@@ -23,17 +22,17 @@ namespace Teh_te4_tekh_ORM
             );
 
             config.MessageHandlers.Add(new MethodOverrideHandler());
-/*
-            config.Routes.MapHttpRoute(
-                name: "GetGameUser",
-                routeTemplate: "api/GameUser/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            /*
+                        config.Routes.MapHttpRoute(
+                            name: "GetGameUser",
+                            routeTemplate: "api/GameUser/{id}",
+                            defaults: new { id = RouteParameter.Optional }
+                        );
 
-            config.Routes.MapHttpRoute(
-                name: "CreateGameUser",
-                routeTemplate: "api/GameUser"
-            );*/
+                        config.Routes.MapHttpRoute(
+                            name: "CreateGameUser",
+                            routeTemplate: "api/GameUser"
+                        );*/
         }
     }
 }

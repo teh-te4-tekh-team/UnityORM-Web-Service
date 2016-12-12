@@ -1,4 +1,4 @@
-﻿namespace Teh_te4_tekh_ORM.Models
+﻿namespace Orm.Models.Models
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;

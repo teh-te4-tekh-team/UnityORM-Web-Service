@@ -1,13 +1,13 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
+    using Orm.Data;
+    using Orm.Models.Models;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
-
-    using Models;
 
     public class PlayerController : ApiController
     {
@@ -16,14 +16,14 @@
         // GET: api/GameUser
         public IQueryable<Player> GetGameUsers()
         {
-            return db.GameUsers;
+            return this.db.GameUsers;
         }
 
         // GET: api/GameUser/5
         [ResponseType(typeof(Player))]
         public IHttpActionResult GetGameUser(int id)
         {
-            Player gameUser = db.GameUsers.Find(id);
+            Player gameUser = this.db.GameUsers.Find(id);
             if (gameUser == null)
             {
                 return this.NotFound();
@@ -82,7 +82,7 @@
             };
 
             this.db.GameUsers.Add(gameUser);
-            
+
             try
             {
                 this.db.SaveChanges();
@@ -104,14 +104,14 @@
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool GameUserExists(int id)
         {
-            return db.GameUsers.Count(e => e.Id == id) > 0;
+            return this.db.GameUsers.Count(e => e.Id == id) > 0;
         }
     }
 }

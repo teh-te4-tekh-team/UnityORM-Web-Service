@@ -1,5 +1,7 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
+    using Orm.Data;
+    using Orm.Models.Models;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
@@ -7,56 +9,54 @@
     using System.Web.Http;
     using System.Web.Http.Description;
 
-    using Models;
-
     public class MapsController : ApiController
     {
-        private GameContext db = new GameContext();
+        private readonly GameContext db = new GameContext();
 
         // GET: api/Maps
         public IQueryable<Map> GetMaps()
         {
-            return db.Maps;
+            return this.db.Maps;
         }
 
         // GET: api/Maps/5
         [ResponseType(typeof(Map))]
         public IHttpActionResult GetMap(int id)
         {
-            Map map = db.Maps.Find(id);
+            Map map = this.db.Maps.Find(id);
             if (map == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return Ok(map);
+            return this.Ok(map);
         }
 
         // PUT: api/Maps/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutMap(int id, Map map)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             if (id != map.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            db.Entry(map).State = EntityState.Modified;
+            this.db.Entry(map).State = EntityState.Modified;
 
             try
             {
-                db.SaveChanges();
+                this.db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MapExists(id))
+                if (!this.MapExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
                 else
                 {
@@ -64,52 +64,52 @@
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return this.StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/Maps
         [ResponseType(typeof(Map))]
         public IHttpActionResult PostMap(Map map)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            db.Maps.Add(map);
-            db.SaveChanges();
+            this.db.Maps.Add(map);
+            this.db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = map.Id }, map);
+            return this.CreatedAtRoute("DefaultApi", new { id = map.Id }, map);
         }
 
         // DELETE: api/Maps/5
         [ResponseType(typeof(Map))]
         public IHttpActionResult DeleteMap(int id)
         {
-            Map map = db.Maps.Find(id);
+            Map map = this.db.Maps.Find(id);
             if (map == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            db.Maps.Remove(map);
-            db.SaveChanges();
+            this.db.Maps.Remove(map);
+            this.db.SaveChanges();
 
-            return Ok(map);
+            return this.Ok(map);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool MapExists(int id)
         {
-            return db.Maps.Count(e => e.Id == id) > 0;
+            return this.db.Maps.Count(e => e.Id == id) > 0;
         }
     }
 }

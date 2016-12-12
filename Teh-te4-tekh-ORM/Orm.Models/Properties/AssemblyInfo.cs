@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Teh-te4-tekh-ORM.Data")]
+[assembly: AssemblyTitle("Orm.Models")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("by adguard")]
-[assembly: AssemblyProduct("Teh-te4-tekh-ORM.Data")]
-[assembly: AssemblyCopyright("Copyright © by adguard 2016")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Orm.Models")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("40626ea4-875d-4b1a-8805-3e7d529f20b6")]
+[assembly: Guid("331659ee-980a-4f2e-8d0d-103fd626a5c5")]
 
 // Version information for an assembly consists of the following four values:
 //

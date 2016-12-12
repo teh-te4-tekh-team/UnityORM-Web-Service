@@ -1,8 +1,7 @@
-namespace Teh_te4_tekh_ORM.Controllers
+﻿namespace Orm.Data
 {
+    using Models.Models;
     using System.Data.Entity;
-
-    using Models;
 
     public class GameContext : DbContext
     {
