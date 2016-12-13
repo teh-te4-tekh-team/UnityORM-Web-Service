@@ -5,14 +5,18 @@
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
-
+    using Orm.Data.Implementations;
     using Orm.Data.Interfaces;
     using Orm.Models.Models;
-    using Orm.Services;
 
     public class CollectablesController : ApiController
     {
-        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
+        private readonly IUnitOfWork unitOfWork;
+
+        public CollectablesController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
 
         // GET: api/Collectables
         public IQueryable<Collectable> GetCollectables()
@@ -112,7 +116,7 @@
 
         private bool CollectableExists(int id)
         {
-            return this.unitOfWork.CollectibleRepository.GetById(id) == null ? false : true;
+            return this.unitOfWork.CollectibleRepository.GetById(id) != null;
         }
     }
 }

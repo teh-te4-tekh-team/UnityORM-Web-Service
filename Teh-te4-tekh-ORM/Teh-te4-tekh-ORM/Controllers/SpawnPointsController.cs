@@ -5,15 +5,18 @@
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
-
+    using Orm.Data.Implementations;
     using Orm.Data.Interfaces;
     using Orm.Models.Models;
-    using Orm.Services;
 
     public class SpawnPointsController : ApiController
     {
-        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
+        private readonly IUnitOfWork unitOfWork;
 
+        public SpawnPointsController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
         // GET: api/SpawnPoints
         public IQueryable<SpawnPoint> GetSpawnPoints()
         {
@@ -110,7 +113,7 @@
 
         private bool SpawnPointExists(int id)
         {
-            return this.unitOfWork.SpawnPointRepository.GetById(id) == null ? false : true;
+            return this.unitOfWork.SpawnPointRepository.GetById(id) != null;
         }
     }
 }

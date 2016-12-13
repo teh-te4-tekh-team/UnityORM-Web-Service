@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq.Expressions;
+    using Models.Models;
 
     /// <summary>
     /// Contract supporting full CRUD operations over a class entity.
@@ -63,5 +65,6 @@
         /// <param name="where">Condition to match an element.</param>
         /// <returns>The specified element matching a certain condition or null if there is none. If there are many an exception is thrown.</returns>
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> where);
+       
     }
 }

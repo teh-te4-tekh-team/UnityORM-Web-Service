@@ -5,14 +5,18 @@
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
-
+    using Orm.Data.Implementations;
     using Orm.Models.Models;
-    using Orm.Services;
     using Orm.Data.Interfaces;
 
     public class CheckPointsController : ApiController
     {
-        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
+        private readonly IUnitOfWork unitOfWork;
+
+        public CheckPointsController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
 
         // GET: api/CheckPoints
         public IQueryable<CheckPoint> GetCheckPoints()
@@ -113,7 +117,7 @@
 
         private bool CheckPointExists(int id)
         {
-            return this.unitOfWork.CheckPointRepository.GetById(id) == null ? false : true;
+            return this.unitOfWork.CheckPointRepository.GetById(id) != null;
         }
     }
 }

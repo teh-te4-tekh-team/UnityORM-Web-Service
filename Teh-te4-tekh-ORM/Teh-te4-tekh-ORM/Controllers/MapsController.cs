@@ -12,7 +12,12 @@
 
     public class MapsController : ApiController
     {
-        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
+        private readonly IUnitOfWork unitOfWork;
+
+        public MapsController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
 
         // GET: api/Maps
         public IQueryable<Map> GetMaps()
@@ -110,7 +115,7 @@
 
         private bool MapExists(int id)
         {
-            return this.unitOfWork.MapRepository.GetById(id) == null ? false : true;
+            return this.unitOfWork.MapRepository.GetById(id) != null;
         }
     }
 }

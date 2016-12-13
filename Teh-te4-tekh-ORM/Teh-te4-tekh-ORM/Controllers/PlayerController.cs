@@ -1,26 +1,31 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
+    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
-
+    using Orm.Data.Implementations;
     using Orm.Data.Interfaces;
     using Orm.Models.Models;
-    using Orm.Services;
 
     public class PlayerController : ApiController
     {
-        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
+        private readonly IUnitOfWork unitOfWork;
 
-        // GET: api/GameUser
+        public PlayerController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
+
+        // GET: api/Player
         public IQueryable<Player> GetGameUsers()
         {
             return this.unitOfWork.PlayerRepository.FindAll(p => p.Id > 0).AsQueryable();
         }
 
-        // GET: api/GameUser/5
+        // GET: api/Player/5
         [ResponseType(typeof(Player))]
         public IHttpActionResult GetGameUser(int id)
         {
@@ -33,7 +38,7 @@
             return this.Ok(gameUser);
         }
 
-        // PUT: api/GameUser/5
+        // PUT: api/Player/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutGameUser(int id, Player gameUser)
         {
@@ -47,7 +52,9 @@
                 return this.BadRequest();
             }
 
-            // this.unitOfWork.Entry(gameUser).State = EntityState.Modified;
+            Player playerEntity = this.unitOfWork.PlayerRepository.GetById(id);
+            playerEntity.Username = gameUser.Username;
+            //this.unitOfWork.PlayerRepository.ChangeState(gameUser, EntityState.Modified);
 
             try
             {
@@ -112,7 +119,7 @@
 
         private bool GameUserExists(int id)
         {
-            return this.unitOfWork.PlayerRepository.GetById(id) == null ? false : true;
+            return this.unitOfWork.PlayerRepository.GetById(id) != null;
         }
     }
 }

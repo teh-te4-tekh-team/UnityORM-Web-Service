@@ -3,6 +3,10 @@
     using MessageHandlers;
     using System.Net.Http.Headers;
     using System.Web.Http;
+    using Microsoft.Practices.Unity;
+    using Orm.Data.Implementations;
+    using Orm.Data.Interfaces;
+    using Services;
 
     public static class WebApiConfig
     {
@@ -21,18 +25,12 @@
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            config.MessageHandlers.Add(new MethodOverrideHandler());
-            /*
-                        config.Routes.MapHttpRoute(
-                            name: "GetGameUser",
-                            routeTemplate: "api/GameUser/{id}",
-                            defaults: new { id = RouteParameter.Optional }
-                        );
+            UnityContainer container = new UnityContainer();
+            container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
+            
+            config.DependencyResolver = new UnityResolver(container);
 
-                        config.Routes.MapHttpRoute(
-                            name: "CreateGameUser",
-                            routeTemplate: "api/GameUser"
-                        );*/
+            config.MessageHandlers.Add(new MethodOverrideHandler());
         }
     }
 }

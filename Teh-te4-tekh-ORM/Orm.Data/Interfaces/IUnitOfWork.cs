@@ -1,5 +1,6 @@
 ﻿namespace Orm.Data.Interfaces
 {
+    using System.Data.Entity;
     using Models.Models;
 
     /// <summary>

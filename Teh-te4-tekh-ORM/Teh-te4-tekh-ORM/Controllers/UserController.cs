@@ -5,14 +5,18 @@
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
-
+    using Orm.Data.Implementations;
     using Orm.Models.Models;
     using Orm.Data.Interfaces;
-    using Orm.Services;
 
     public class UserController : ApiController
     {
-        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
+
+        private readonly IUnitOfWork unitOfWork;
+        public UserController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
 
         // GET: api/ApplicationUser
         public IQueryable<User> GetApplicationUsers()
@@ -68,7 +72,7 @@
             return this.StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/ApplicationUser
+        // POST: api/User
         [ResponseType(typeof(User))]
         public IHttpActionResult PostApplicationUser(User applicationUser)
         {
@@ -97,7 +101,7 @@
                 return this.Conflict();
             }
 
-            return this.CreatedAtRoute("DefaultApi", new { id = applicationUser.Id }, applicationUser);
+            return this.Created("", applicationUser);
         }
 
         protected override void Dispose(bool disposing)
@@ -111,7 +115,7 @@
 
         private bool ApplicationUserExists(int id)
         {
-            return this.unitOfWork.UserRepository.GetById(id) == null ? false : true;
+            return this.unitOfWork.UserRepository.GetById(id) != null;
         }
     }
 }
