@@ -2,7 +2,6 @@
 {
     using Data.Interfaces;
     using Models.Models;
-    using System.Linq;
 
     public class SpawnPointService : Service
     {
@@ -15,7 +14,7 @@
 
         public SpawnPoint GetSpawnPointId(int id)
         {
-            return this.unit.SpawnPointRepository.FindAll(spawn => spawn.Id == id).FirstOrDefault();
+            return this.unit.SpawnPointRepository.GetById(id);
         }
     }
 }

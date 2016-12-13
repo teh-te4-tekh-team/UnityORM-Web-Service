@@ -1,29 +1,30 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
-    using Orm.Data;
-    using Orm.Models.Models;
-    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
 
+    using Orm.Data.Interfaces;
+    using Orm.Models.Models;
+    using Orm.Services;
+
     public class PlayerController : ApiController
     {
-        private readonly GameContext db = new GameContext();
+        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
 
         // GET: api/GameUser
         public IQueryable<Player> GetGameUsers()
         {
-            return this.db.GameUsers;
+            return this.unitOfWork.PlayerRepository.FindAll(p => p.Id > 0).AsQueryable();
         }
 
         // GET: api/GameUser/5
         [ResponseType(typeof(Player))]
         public IHttpActionResult GetGameUser(int id)
         {
-            Player gameUser = this.db.GameUsers.Find(id);
+            Player gameUser = this.unitOfWork.PlayerRepository.GetById(id);
             if (gameUser == null)
             {
                 return this.NotFound();
@@ -46,11 +47,11 @@
                 return this.BadRequest();
             }
 
-            this.db.Entry(gameUser).State = EntityState.Modified;
+            // this.unitOfWork.Entry(gameUser).State = EntityState.Modified;
 
             try
             {
-                this.db.SaveChanges();
+                this.unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -71,7 +72,7 @@
 
             if (this.GameUserExists(applicationUser.Id))
             {
-                Player user = this.db.GameUsers.Find(applicationUser.Id);
+                Player user = this.unitOfWork.PlayerRepository.GetById(applicationUser.Id);
                 return this.CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
             }
 
@@ -81,11 +82,11 @@
                 Username = applicationUser.Email
             };
 
-            this.db.GameUsers.Add(gameUser);
+            this.unitOfWork.PlayerRepository.Add(gameUser);
 
             try
             {
-                this.db.SaveChanges();
+                this.unitOfWork.Commit();
             }
             catch (DbUpdateException)
             {
@@ -104,14 +105,14 @@
         {
             if (disposing)
             {
-                this.db.Dispose();
+                this.unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool GameUserExists(int id)
         {
-            return this.db.GameUsers.Count(e => e.Id == id) > 0;
+            return this.unitOfWork.PlayerRepository.GetById(id) == null ? false : true;
         }
     }
 }

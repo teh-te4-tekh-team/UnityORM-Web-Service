@@ -1,29 +1,30 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
-    using Orm.Data;
-    using Orm.Models.Models;
-    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
 
+    using Orm.Data.Interfaces;
+    using Orm.Models.Models;
+    using Orm.Services;
+
     public class SpawnPointsController : ApiController
     {
-        private readonly GameContext db = new GameContext();
+        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
 
         // GET: api/SpawnPoints
         public IQueryable<SpawnPoint> GetSpawnPoints()
         {
-            return this.db.SpawnPoints;
+            return this.unitOfWork.SpawnPointRepository.FindAll(sp => sp.Id > 0).AsQueryable();
         }
 
         // GET: api/SpawnPoints/5
         [ResponseType(typeof(SpawnPoint))]
         public IHttpActionResult GetSpawnPoint(int id)
         {
-            SpawnPoint spawnPoint = this.db.SpawnPoints.Find(id);
+            SpawnPoint spawnPoint = this.unitOfWork.SpawnPointRepository.GetById(id);
             if (spawnPoint == null)
             {
                 return this.NotFound();
@@ -46,11 +47,11 @@
                 return this.BadRequest();
             }
 
-            this.db.Entry(spawnPoint).State = EntityState.Modified;
+            // this.unitOfWork.Entry(spawnPoint).State = EntityState.Modified;
 
             try
             {
-                this.db.SaveChanges();
+                this.unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -76,8 +77,8 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            this.db.SpawnPoints.Add(spawnPoint);
-            this.db.SaveChanges();
+            this.unitOfWork.SpawnPointRepository.Add(spawnPoint);
+            this.unitOfWork.Commit();
 
             return this.CreatedAtRoute("DefaultApi", new { id = spawnPoint.Id }, spawnPoint);
         }
@@ -86,14 +87,14 @@
         [ResponseType(typeof(SpawnPoint))]
         public IHttpActionResult DeleteSpawnPoint(int id)
         {
-            SpawnPoint spawnPoint = this.db.SpawnPoints.Find(id);
+            SpawnPoint spawnPoint = this.unitOfWork.SpawnPointRepository.GetById(id);
             if (spawnPoint == null)
             {
                 return this.NotFound();
             }
 
-            this.db.SpawnPoints.Remove(spawnPoint);
-            this.db.SaveChanges();
+            this.unitOfWork.SpawnPointRepository.Delete(spawnPoint);
+            this.unitOfWork.Commit();
 
             return this.Ok(spawnPoint);
         }
@@ -102,14 +103,14 @@
         {
             if (disposing)
             {
-                this.db.Dispose();
+                this.unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool SpawnPointExists(int id)
         {
-            return this.db.SpawnPoints.Count(e => e.Id == id) > 0;
+            return this.unitOfWork.SpawnPointRepository.GetById(id) == null ? false : true;
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿namespace Orm.Services
 {
-    using Data.Interfaces;
-    using Models.Models;
     using System;
     using System.Linq;
+
+    using Data.Interfaces;
+    using Models.Models;
 
     public class UserService : Service
     {
@@ -16,12 +17,12 @@
 
         public User GetUserById(int id)
         {
-            return this.unit.UserRepository.FindAll(user => user.Id == id).FirstOrDefault();
+            return this.unit.UserRepository.GetById(id);
         }
 
         public User GetUserByEmail(string email)
         {
-            if (String.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(email))
             {
                 throw new ArgumentNullException(nameof(email), "The email cannot be empty!");
             }

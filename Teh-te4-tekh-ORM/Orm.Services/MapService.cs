@@ -1,21 +1,20 @@
 ﻿namespace Orm.Services
 {
-    using Data;
+    using Data.Interfaces;
     using Models.Models;
-    using System.Linq;
 
     public class MapService : Service
     {
-        private readonly UnitOfWork unit;
+        private readonly IUnitOfWork unit;
 
-        public MapService(UnitOfWork unit) : base(unit)
+        public MapService(IUnitOfWork unit) : base(unit)
         {
             this.unit = unit;
         }
 
         public Map GetMapById(int id)
         {
-            return this.unit.MapRepository.FindAll(map => map.Id == id).FirstOrDefault();
+            return this.unit.MapRepository.GetById(id);
         }
     }
 }

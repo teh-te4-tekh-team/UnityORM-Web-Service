@@ -1,29 +1,30 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
-    using Orm.Data;
-    using Orm.Models.Models;
-    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
 
+    using Orm.Models.Models;
+    using Orm.Services;
+    using Orm.Data.Interfaces;
+
     public class CheckPointsController : ApiController
     {
-        private readonly GameContext db = new GameContext();
+        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
 
         // GET: api/CheckPoints
         public IQueryable<CheckPoint> GetCheckPoints()
         {
-            return this.db.CheckPoints;
+            return this.unitOfWork.CheckPointRepository.FindAll(cp => cp.Id > 0).AsQueryable();
         }
 
         // GET: api/CheckPoints/5
         [ResponseType(typeof(CheckPoint))]
         public IHttpActionResult GetCheckPoint(int id)
         {
-            CheckPoint checkPoint = this.db.CheckPoints.Find(id);
+            CheckPoint checkPoint = this.unitOfWork.CheckPointRepository.GetById(id);
             if (checkPoint == null)
             {
                 return this.NotFound();
@@ -46,11 +47,13 @@
                 return this.BadRequest();
             }
 
-            this.db.Entry(checkPoint).State = EntityState.Modified;
+            // Warn!
+            // Marking the state of an entry as modified. This might be needed in our UoW as well.
+            // this.unitOfWork.Entry(checkPoint).State = EntityState.Modified;
 
             try
             {
-                this.db.SaveChanges();
+                this.unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -76,8 +79,8 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            this.db.CheckPoints.Add(checkPoint);
-            this.db.SaveChanges();
+            this.unitOfWork.CheckPointRepository.Add(checkPoint);
+            this.unitOfWork.Commit();
 
             return this.CreatedAtRoute("DefaultApi", new { id = checkPoint.Id }, checkPoint);
         }
@@ -86,14 +89,14 @@
         [ResponseType(typeof(CheckPoint))]
         public IHttpActionResult DeleteCheckPoint(int id)
         {
-            CheckPoint checkPoint = this.db.CheckPoints.Find(id);
+            CheckPoint checkPoint = this.unitOfWork.CheckPointRepository.GetById(id);
             if (checkPoint == null)
             {
                 return this.NotFound();
             }
 
-            this.db.CheckPoints.Remove(checkPoint);
-            this.db.SaveChanges();
+            this.unitOfWork.CheckPointRepository.Delete(checkPoint);
+            this.unitOfWork.Commit();
 
             return this.Ok(checkPoint);
         }
@@ -102,14 +105,15 @@
         {
             if (disposing)
             {
-                this.db.Dispose();
+                this.unitOfWork.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
         private bool CheckPointExists(int id)
         {
-            return this.db.CheckPoints.Count(e => e.Id == id) > 0;
+            return this.unitOfWork.CheckPointRepository.GetById(id) == null ? false : true;
         }
     }
 }

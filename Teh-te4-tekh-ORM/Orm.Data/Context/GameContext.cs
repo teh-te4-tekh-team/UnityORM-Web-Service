@@ -1,4 +1,4 @@
-﻿namespace Orm.Data
+﻿namespace Orm.Data.Context
 {
     using Models.Models;
     using System.Data.Entity;
@@ -10,9 +10,9 @@
         {
         }
 
-        public virtual DbSet<User> ApplicationUsers { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
-        public virtual DbSet<Player> GameUsers { get; set; }
+        public virtual DbSet<Player> Players { get; set; }
 
         public virtual DbSet<Map> Maps { get; set; }
 

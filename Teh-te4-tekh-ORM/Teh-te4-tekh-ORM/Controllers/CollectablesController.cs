@@ -1,29 +1,30 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
-    using Orm.Data;
-    using Orm.Models.Models;
-    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
 
+    using Orm.Data.Interfaces;
+    using Orm.Models.Models;
+    using Orm.Services;
+
     public class CollectablesController : ApiController
     {
-        private readonly GameContext db = new GameContext();
+        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
 
         // GET: api/Collectables
         public IQueryable<Collectable> GetCollectables()
         {
-            return this.db.Collectables;
+            return this.unitOfWork.CollectibleRepository.FindAll(c => c.Id > 0).AsQueryable();
         }
 
         // GET: api/Collectables/5
         [ResponseType(typeof(Collectable))]
         public IHttpActionResult GetCollectable(int id)
         {
-            Collectable collectable = this.db.Collectables.Find(id);
+            Collectable collectable = this.unitOfWork.CollectibleRepository.GetById(id);
             if (collectable == null)
             {
                 return this.NotFound();
@@ -46,11 +47,12 @@
                 return this.BadRequest();
             }
 
-            this.db.Entry(collectable).State = EntityState.Modified;
+            // Same sh*t as CheckpointsController
+            // this.db.Entry(collectable).State = EntityState.Modified;
 
             try
             {
-                this.db.SaveChanges();
+                this.unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -76,8 +78,8 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            this.db.Collectables.Add(collectable);
-            this.db.SaveChanges();
+            this.unitOfWork.CollectibleRepository.Add(collectable);
+            this.unitOfWork.Commit();
 
             return this.CreatedAtRoute("DefaultApi", new { id = collectable.Id }, collectable);
         }
@@ -86,14 +88,14 @@
         [ResponseType(typeof(Collectable))]
         public IHttpActionResult DeleteCollectable(int id)
         {
-            Collectable collectable = this.db.Collectables.Find(id);
+            Collectable collectable = this.unitOfWork.CollectibleRepository.GetById(id);
             if (collectable == null)
             {
                 return this.NotFound();
             }
 
-            this.db.Collectables.Remove(collectable);
-            this.db.SaveChanges();
+            this.unitOfWork.CollectibleRepository.Delete(collectable);
+            this.unitOfWork.Commit();
 
             return this.Ok(collectable);
         }
@@ -102,14 +104,15 @@
         {
             if (disposing)
             {
-                this.db.Dispose();
+                this.unitOfWork.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
         private bool CollectableExists(int id)
         {
-            return this.db.Collectables.Count(e => e.Id == id) > 0;
+            return this.unitOfWork.CollectibleRepository.GetById(id) == null ? false : true;
         }
     }
 }

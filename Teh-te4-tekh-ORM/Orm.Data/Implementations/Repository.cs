@@ -1,12 +1,13 @@
-﻿namespace Orm.Data
+﻿namespace Orm.Data.Implementations
 {
-    using EntityFramework.Extensions;
-    using Interfaces;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
+
+    using EntityFramework.Extensions;
+    using Interfaces;
 
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
@@ -29,12 +30,13 @@
 
         public void DeleteRange(IEnumerable<TEntity> entitites)
         {
-            this.Set.Delete(entitites.AsQueryable());
+            this.Set.Where(en => entitites.Contains(en)).Delete();
+
         }
 
-        public TEntity GetById(int id)
+        public TEntity GetById(params object[] keys)
         {
-            return this.Set.Find(id);
+            return this.Set.Find(keys);
         }
 
         public IEnumerable<TEntity> FindAll(Expression<Func<TEntity, bool>> @where)
@@ -44,10 +46,15 @@
 
         public TEntity Single(Expression<Func<TEntity, bool>> @where)
         {
-            return this.Set.First(where);
+            return this.Set.Single(where);
         }
 
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> @where)
+        {
+            return this.Set.SingleOrDefault(where);
+        }
+
+        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> @where)
         {
             return this.Set.FirstOrDefault(where);
         }

@@ -1,29 +1,30 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
-    using Orm.Data;
-    using Orm.Models.Models;
-    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
 
+    using Orm.Models.Models;
+    using Orm.Data.Interfaces;
+    using Orm.Services;
+
     public class UserController : ApiController
     {
-        private readonly GameContext db = new GameContext();
+        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
 
         // GET: api/ApplicationUser
         public IQueryable<User> GetApplicationUsers()
         {
-            return this.db.ApplicationUsers;
+            return this.unitOfWork.UserRepository.FindAll(u => u.Id > 0).AsQueryable();
         }
 
         // GET: api/ApplicationUser/5
         [ResponseType(typeof(User))]
         public IHttpActionResult GetApplicationUser(int id)
         {
-            User applicationUser = this.db.ApplicationUsers.Find(id);
+            User applicationUser = this.unitOfWork.UserRepository.GetById(id);
             if (applicationUser == null)
             {
                 return this.NotFound();
@@ -46,11 +47,11 @@
                 return this.BadRequest();
             }
 
-            this.db.Entry(applicationUser).State = EntityState.Modified;
+            // this.unitOfWork.Entry(applicationUser).State = EntityState.Modified;
 
             try
             {
-                this.db.SaveChanges();
+                this.unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -77,19 +78,19 @@
             }
 
             User user =
-                this.db.ApplicationUsers.SingleOrDefault(
-                    au => au.Email.Equals(applicationUser.Email) && au.Password.Equals(applicationUser.Password));
+                this.unitOfWork.UserRepository.SingleOrDefault(
+                    u => u.Email.Equals(applicationUser.Email) && u.Password.Equals(applicationUser.Password));
 
             if (user != null)
             {
                 return this.CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
             }
 
-            this.db.ApplicationUsers.Add(applicationUser);
+            this.unitOfWork.UserRepository.Add(applicationUser);
 
             try
             {
-                this.db.SaveChanges();
+                this.unitOfWork.Commit();
             }
             catch (DbUpdateException)
             {
@@ -103,14 +104,14 @@
         {
             if (disposing)
             {
-                this.db.Dispose();
+                this.unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool ApplicationUserExists(int id)
         {
-            return this.db.ApplicationUsers.Count(e => e.Id == id) > 0;
+            return this.unitOfWork.UserRepository.GetById(id) == null ? false : true;
         }
     }
 }

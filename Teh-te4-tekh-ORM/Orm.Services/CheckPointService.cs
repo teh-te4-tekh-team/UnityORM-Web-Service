@@ -1,9 +1,12 @@
 ﻿namespace Orm.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Data.Interfaces;
     using Models.Models;
-    using System;
-    using System.Linq;
+    using System.Linq.Expressions;
 
     public class CheckPointService : Service
     {
@@ -16,7 +19,7 @@
 
         public CheckPoint GetCheckPointById(int id)
         {
-            return this.unit.CheckPointRepository.FindAll(check => check.Id == id).FirstOrDefault();
+            return this.unit.CheckPointRepository.GetById(id);
         }
 
         public CheckPoint GetCheckPointByX(float x)
@@ -32,6 +35,21 @@
         public CheckPoint GetCheckPointByZ(float z)
         {
             return this.unit.CheckPointRepository.FindAll(check => Math.Abs(check.Id - z) < 0).FirstOrDefault();
+        }
+
+        public CheckPoint GetCheckPointByCoordinates(float x, float y, float z)
+        {
+            return this.unit.CheckPointRepository.FindAll(check => check.X == x && check.Y == y && check.Z == z).FirstOrDefault();
+        }
+
+        public IEnumerable<CheckPoint> GetAllCheckpoints()
+        {
+            return this.unit.CheckPointRepository.FindAll(c => c.Id > 0);
+        }
+
+        public IEnumerable<CheckPoint> FindAll(Expression<Func<CheckPoint, bool>> where)
+        {
+            return this.unit.CheckPointRepository.FindAll(where);
         }
     }
 }

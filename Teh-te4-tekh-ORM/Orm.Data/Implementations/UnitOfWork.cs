@@ -1,5 +1,6 @@
-﻿namespace Orm.Data
+﻿namespace Orm.Data.Implementations
 {
+    using Context;
     using Interfaces;
     using Models.Models;
 
@@ -71,6 +72,11 @@
         public void Commit()
         {
             this.context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            this.context.Dispose();
         }
     }
 }

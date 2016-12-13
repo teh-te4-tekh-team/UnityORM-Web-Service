@@ -1,29 +1,30 @@
 ﻿namespace Teh_te4_tekh_ORM.Controllers
 {
-    using Orm.Data;
-    using Orm.Models.Models;
-    using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.Description;
 
+    using Orm.Data.Interfaces;
+    using Orm.Models.Models;
+    using Orm.Services;
+
     public class MapsController : ApiController
     {
-        private readonly GameContext db = new GameContext();
+        private readonly IUnitOfWork unitOfWork = UnitOfWorkProvider.Instance;
 
         // GET: api/Maps
         public IQueryable<Map> GetMaps()
         {
-            return this.db.Maps;
+            return this.unitOfWork.MapRepository.FindAll(m => m.Id > 0).AsQueryable();
         }
 
         // GET: api/Maps/5
         [ResponseType(typeof(Map))]
         public IHttpActionResult GetMap(int id)
         {
-            Map map = this.db.Maps.Find(id);
+            Map map = this.unitOfWork.MapRepository.GetById(id);
             if (map == null)
             {
                 return this.NotFound();
@@ -46,11 +47,11 @@
                 return this.BadRequest();
             }
 
-            this.db.Entry(map).State = EntityState.Modified;
+            // this.unitOfWork.Entry(map).State = EntityState.Modified;
 
             try
             {
-                this.db.SaveChanges();
+                this.unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -76,8 +77,8 @@
                 return this.BadRequest(this.ModelState);
             }
 
-            this.db.Maps.Add(map);
-            this.db.SaveChanges();
+            this.unitOfWork.MapRepository.Add(map);
+            this.unitOfWork.Commit();
 
             return this.CreatedAtRoute("DefaultApi", new { id = map.Id }, map);
         }
@@ -86,14 +87,14 @@
         [ResponseType(typeof(Map))]
         public IHttpActionResult DeleteMap(int id)
         {
-            Map map = this.db.Maps.Find(id);
+            Map map = this.unitOfWork.MapRepository.GetById(id);
             if (map == null)
             {
                 return this.NotFound();
             }
 
-            this.db.Maps.Remove(map);
-            this.db.SaveChanges();
+            this.unitOfWork.MapRepository.Delete(map);
+            this.unitOfWork.Commit();
 
             return this.Ok(map);
         }
@@ -102,14 +103,14 @@
         {
             if (disposing)
             {
-                this.db.Dispose();
+                this.unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool MapExists(int id)
         {
-            return this.db.Maps.Count(e => e.Id == id) > 0;
+            return this.unitOfWork.MapRepository.GetById(id) == null ? false : true;
         }
     }
 }
