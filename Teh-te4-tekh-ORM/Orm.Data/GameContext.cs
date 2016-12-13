@@ -10,16 +10,16 @@
         {
         }
 
-        public DbSet<User> ApplicationUsers { get; set; }
+        public virtual DbSet<User> ApplicationUsers { get; set; }
 
-        public DbSet<Player> GameUsers { get; set; }
+        public virtual DbSet<Player> GameUsers { get; set; }
 
-        public DbSet<Map> Maps { get; set; }
+        public virtual DbSet<Map> Maps { get; set; }
 
-        public DbSet<SpawnPoint> SpawnPoints { get; set; }
+        public virtual DbSet<SpawnPoint> SpawnPoints { get; set; }
 
-        public DbSet<CheckPoint> CheckPoints { get; set; }
+        public virtual DbSet<CheckPoint> CheckPoints { get; set; }
 
-        public DbSet<Collectable> Collectables { get; set; }
+        public virtual DbSet<Collectable> Collectables { get; set; }
     }
 }
